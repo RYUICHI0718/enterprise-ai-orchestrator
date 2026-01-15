@@ -118,6 +118,45 @@ export default function ChatWindow({
         setLoading(true);
 
         try {
+            // --- MOCK MODE START ---
+            if (process.env.NEXT_PUBLIC_USE_MOCK === "true") {
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
+
+                const mockData = {
+                    content: `【デモモード】\n\nご質問ありがとうございます。「${userText}」に関する回答です。\n\n※現在はサーバーに接続されていないため、これは自動応答のサンプルです。\n実際のシステムでは、RAG（検索拡張生成）を用いて詳細な回答を生成します。`,
+                    options: ["デモ質問1", "デモ質問2", "最初のメニューに戻る"],
+                    related_questions: ["リ・バース60とは？", "金利について"]
+                };
+
+                // Add empty assistant message for typewriter effect
+                setMessages(prev => [...prev, {
+                    role: "assistant",
+                    content: "",
+                    options: mockData.options,
+                    related_questions: mockData.related_questions
+                }]);
+
+                const fullText = mockData.content;
+                let currentText = "";
+
+                // Client-side Typewriter Effect
+                const typeWriter = async () => {
+                    for (let i = 0; i < fullText.length; i++) {
+                        currentText += fullText[i];
+                        setMessages(prev => {
+                            const newArr = [...prev];
+                            newArr[newArr.length - 1].content = currentText;
+                            return newArr;
+                        });
+                        await new Promise(resolve => setTimeout(resolve, 30));
+                    }
+                };
+                await typeWriter();
+                setLoading(false);
+                return;
+            }
+            // --- MOCK MODE END ---
+
             const response = await fetch("http://localhost:8000/api/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },

@@ -119,7 +119,8 @@ export default function ChatWindow({
 
         try {
             // --- MOCK MODE START ---
-            if (process.env.NEXT_PUBLIC_USE_MOCK === "true") {
+            // Force enabled for GitHub Pages deployment
+            if (true || process.env.NEXT_PUBLIC_USE_MOCK === "true") {
                 await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
 
                 const mockData = {

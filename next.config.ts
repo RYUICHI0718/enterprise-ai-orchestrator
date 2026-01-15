@@ -1,5 +1,10 @@
 import type { NextConfig } from "next";
 
+const nextConfig: NextConfig = {
+  output: 'export',
+  images: {
+    unoptimized: true,
+  },
   /* Rewrites cause issues in static Vercel deployments without backend
   async rewrites() {
     return [

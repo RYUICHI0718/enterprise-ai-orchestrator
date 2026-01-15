@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  /* config options here */
+  /* Rewrites cause issues in static Vercel deployments without backend
   async rewrites() {
     return [
       {
@@ -10,6 +9,7 @@ const nextConfig: NextConfig = {
       }
     ]
   }
+  */
 };
 
 export default nextConfig;
